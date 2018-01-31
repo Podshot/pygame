@@ -35,6 +35,7 @@ matrix:
       env:
         - PY_VERSION=2
         - MAKEFLAGS=-j8
+        - XCODE=7.3
         # - MACOSX_DEPLOYMENT_TARGET=10.6
     - os: osx
       osx_image: xcode8
@@ -42,6 +43,7 @@ matrix:
       env:
         - PY_VERSION=2
         - MAKEFLAGS=-j8
+        - XCODE=8
 
 before_install:
   - git clone https://github.com/Podshot/MCEdit-Unified.git
@@ -85,7 +87,8 @@ script:
   - if [ "${TRAVIS_BUILD_NUMBER}x" = "x" ]; then return 0; fi
   - export MCEDIT_BUILD_VERSION=${TRAVIS_BUILD_NUMBER}
   - pyinstaller mcedit-ci-osx.spec
-  - zip -r "MCEdit-Unified_osx_testing_r${MCEDIT_BUILD_VERSION}.zip" "dist" -x "*.DS_Store"
+  - zip -r "MCEdit-Unified_osx_testing_r${MCEDIT_BUILD_VERSION}_xcode${XCODE}.zip" "dist" -x "*.DS_Store"
+  - cd ..
 
 after_success:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source .travis_osx_after_success.sh; fi
@@ -99,7 +102,7 @@ deploy:
   prerelease: true
   name: "MCEdit-Unified OS X Testing Release $MCEDIT_BUILD_VERSION"
   file:
-    - MCEdit-Unified_osx_testing_r*.zip
+    - MCEdit-Unified/MCEdit-Unified_osx_testing_r*_xcode*.zip
   file_glob: true
   skip_cleanup: true
   repository: Podshot/MCEdit-Unified
