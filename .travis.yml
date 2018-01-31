@@ -36,6 +36,12 @@ matrix:
         - PY_VERSION=2
         - MAKEFLAGS=-j8
         # - MACOSX_DEPLOYMENT_TARGET=10.6
+    - os: osx
+      osx_image: xcode8
+      language: generic
+      env:
+        - PY_VERSION=2
+        - MAKEFLAGS=-j8
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source .travis_osx_before_install.sh;  fi
